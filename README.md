@@ -30,9 +30,10 @@ Before you begin, ensure you have met the following requirements:
 Follow these steps to set up your project:
 
 ### Step 1: Clone the Repository
+        https://github.com/josephjimenezs/GitlabRunner-PowerShell-PBI.git
 
-### Step 2: Create the 
-
+### Step 2: Create the Image from the docker file:
+        docker build --pull --rm -f "docker" -t gitlabrunnerpowershellpbi:latest "." 
 
 ### Step 3: Clone the Repository
 
