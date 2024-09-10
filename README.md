@@ -4,12 +4,13 @@
 
 ## Overview
 
-Briefly describe what your project does, its purpose, and its main features.
+This project describes all elements and steps related to Image creation and usage for the josephjimenezs/gitlabrunner-powershell-powerbi:1.0 image located on dockerhub.
+If you want just configure and use, please go to step 3 Usage.
 
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
-2. [Installation](#installation)
+2. [Creation](#creation)
 3. [Usage](#usage)
 4. [Configuration](#configuration)
 5. [Contributing](#contributing)
@@ -33,7 +34,7 @@ Follow these steps to set up your project:
         https://github.com/josephjimenezs/GitlabRunner-PowerShell-PBI.git
 
 ### Step 2: Create the Image from the docker file:
-        docker build --pull --rm -f "docker" -t gitlabrunnerpowershellpbi:latest "." 
+        docker build --pull --rm -f "docker" -t yournewimage:latest "." 
 
 ### Step 3: Create a shared folder
         
