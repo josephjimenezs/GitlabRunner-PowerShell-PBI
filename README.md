@@ -33,8 +33,14 @@ Follow these steps to set up your project:
 ### Step 1: Clone the Repository
         https://github.com/josephjimenezs/GitlabRunner-PowerShell-PBI.git
 
-### Step 2: Create the Image from the docker file:
-        docker build --pull --rm -f "docker" -t yournewimage:latest "." 
+### Step 2: Create the Image from the docker file and push to dockerhub
+
+#### Step 2.1 Image Creation
+        docker build --pull --rm -f "docker" -t yournewimage:1.0 "." 
+#### Step 2.2 Image Publication to DockerHub
+        docker login
+        docker tag yournewimage:1.0 dockerhubrepository/yournewimage:1.0
+        docker push dockerhubrepository/yournewimage:1.0
 
 ## Usage
 
@@ -46,12 +52,24 @@ Follow these steps to set up your project:
 ### Step 2: Create a container, using the image created and the runner folder
        docker run -d --name gitlab-runner-pbi -v /var/run/docker.sock:/var/run/docker.sock -v c:/Docker/GitlabRunner:/etc/gitlab-runner -it josephjimenezs/gitlabrunner-powershell-powerbi:1.0
 
-### Step 2: gitlab runner container configuration
+### Step 3: Gitlab runner container configuration
 First must go to Gitlab and create a new runner, get your server url and registration token to connect your runner with gitlab's runner.
 
-        docker exec -it gitlab-runner-pbi gitlab-runner register --non-interactive --executor "docker" --shell "pwsh" --docker-image "josephjimenezs/gitlabrunner-powershell-powerbi:1.0" --url "https://itgitlab.corp.qorvo.com" --description "pwsh-docker-runner" --tag-list "pwsh,docker" --locked="false" --access-level="not_protected" --registration-token="yourtoken"
+        docker exec -it gitlab-runner-pbi gitlab-runner register --non-interactive --executor "docker" --shell "pwsh" --docker-image "josephjimenezs/gitlabrunner-powershell-powerbi:1.0" --url "yourgitabserver" --description "pwsh-docker-runner" --tag-list "pwsh,docker" --locked="false" --access-level="not_protected" --registration-token="yourtoken"
 
-### Step 3: Reference the powershell file on the yaml file
+
+### Step 4: Container Tools Verification
+        docker exec -it gitlab-runner-pbi pwsh
+        $PSVersionTable
+        gitlab-runner --version
+        Get-InstalledModule
+
+
+### Step 5: Create the PowerShell File
+
+
+
+### Step 6: Reference the powershell file on the yaml file
 #### .gitlab-ci.yml:
 
         image:
