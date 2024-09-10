@@ -35,7 +35,29 @@ Follow these steps to set up your project:
 ### Step 2: Create the Image from the docker file:
         docker build --pull --rm -f "docker" -t gitlabrunnerpowershellpbi:latest "." 
 
-### Step 3: Clone the Repository
+### Step 3: Create a shared folder
+        
+## Usage
+
+### Step 1: Reference the powershell file on the yaml file
+#### .gitlab-ci.yml:
+
+        image:
+          name: josephjimenezs/gitlabrunner-powershell-powerbi:1.0
+          entrypoint: [""]		
+        stages:
+          - build
+
+        variables:
+          SMTP_USERNAME: ${SMTP_USERNAME}
+          SMTP_PASSWORD: ${SMTP_PASSWORD} 
+
+        build:
+          stage: build
+          script:
+            - echo "Starting the process"
+            - pwsh -ExecutionPolicy Bypass -File CD.ps1  	
+            - echo "Process Completed"
 
 
 ## License
