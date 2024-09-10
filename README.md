@@ -1,11 +1,11 @@
-# Project Name
+# GitlabRunner-PowerShell-PowerBI
 
 ![Project Logo](link-to-your-logo.png)
 
 ## Overview
 
 This project describes all elements and steps related to Image creation and usage for the josephjimenezs/gitlabrunner-powershell-powerbi:1.0 image located on dockerhub.
-If you want just configure and use, please go to step 3 Usage.
+If you want just configure and use, please go to step 3:  *Usage*.
 
 ## Table of Contents
 
@@ -36,11 +36,22 @@ Follow these steps to set up your project:
 ### Step 2: Create the Image from the docker file:
         docker build --pull --rm -f "docker" -t yournewimage:latest "." 
 
-### Step 3: Create a shared folder
-        
 ## Usage
 
-### Step 1: Reference the powershell file on the yaml file
+### Step 1: Install LocalGitlabRunner (windows environment)
+        New-Item -Path 'c:/Docker/GitlabRunner' -ItemType Directory
+        cd 'C:\GitLab-Runner'
+        Invoke-WebRequest -Uri "https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-windows-amd64.exe" -OutFile "gitlab-runner.exe"
+        
+### Step 2: Create a container, using the image created and the runner folder
+       docker run -d --name gitlab-runner-pbi -v /var/run/docker.sock:/var/run/docker.sock -v c:/Docker/GitlabRunner:/etc/gitlab-runner -it josephjimenezs/gitlabrunner-powershell-powerbi:1.0
+
+### Step 2: gitlab runner container configuration
+First must go to Gitlab and create a new runner, get your server url and registration token to connect your runner with gitlab's runner.
+
+        docker exec -it gitlab-runner-pbi gitlab-runner register --non-interactive --executor "docker" --shell "pwsh" --docker-image "josephjimenezs/gitlabrunner-powershell-powerbi:1.0" --url "https://itgitlab.corp.qorvo.com" --description "pwsh-docker-runner" --tag-list "pwsh,docker" --locked="false" --access-level="not_protected" --registration-token="yourtoken"
+
+### Step 3: Reference the powershell file on the yaml file
 #### .gitlab-ci.yml:
 
         image:
