@@ -1,7 +1,5 @@
 # GitlabRunner-PowerShell-PowerBI
 
-![Project Logo](link-to-your-logo.png)
-
 ## Overview
 
 This project describes all elements and steps related to Image creation and usage for the josephjimenezs/gitlabrunner-powershell-powerbi:1.0 image located on dockerhub.
