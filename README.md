@@ -66,7 +66,49 @@ First must go to Gitlab and create a new runner, get your server url and registr
 
 
 ### Step 5: Create the PowerShell File
+        # Define variables
+        $PbiUser = "userName"
+        $PbiPassword = "Password"
+        $WorkspaceName = "WorkspaceName"
+        $PbixFilePath = "ReportRoute"
+        $ReportName = "ReportName"
 
+        # Import Power BI modules
+        Import-Module MicrosoftPowerBIMgmt
+        Import-Module MicrosoftPowerBIMgmt.Profile
+
+        # Convert password to a secure string
+        $PbiSecurePassword = ConvertTo-SecureString $PbiPassword -AsPlainText -Force
+
+        # Create a credential object
+        #$PbiCredential = New-Object -TypeName PSCredential -ArgumentList $PbiUser, $PbiSecurePassword
+        $PbiCredential = New-Object PSCredential($PbiUser, $PbiSecurePassword)
+
+        ##################################################################################
+        # Log in to Power BI using the stored credentials
+        Login-PowerBIServiceAccount -Credential $PbiCredential
+
+        # Check if the connection was successful
+        if ($? -eq $false) {
+               Write-Error "Failed to connect to Power BI Service Account using stored credentials."
+               exit 1
+           }
+        #################################################################################
+
+        # Connect to the Power BI service
+        Connect-PowerBIServiceAccount -Credential $PbiCredential
+
+        # Retrieve the workspace
+        $WorkspaceObject = Get-PowerBIWorkspace -Scope Organization -Name $WorkspaceName
+
+
+        try {
+            # Deploy pbix file
+            New-PowerBIReport -WorkspaceId $WorkspaceObject.Id -Path $PbixFilePath -Name $ReportName -ConflictAction CreateOrOverwrite | Out-Null
+        } catch {
+            # Output an error message
+            Write-Output "Error found"
+        }
 
 
 ### Step 6: Reference the powershell file on the yaml file
