@@ -55,6 +55,39 @@ First must go to Gitlab and create a new runner, get your server url and registr
 
         docker exec -it gitlab-runner-pbi gitlab-runner register --non-interactive --executor "docker" --shell "pwsh" --docker-image "josephjimenezs/gitlabrunner-powershell-powerbi:1.0" --url "yourgitabserver" --description "pwsh-docker-runner" --tag-list "pwsh,docker" --locked="false" --access-level="not_protected" --registration-token="yourtoken"
 
+### Step 3.1: Change config.toml file
+        concurrent = 1
+        check_interval = 0
+        connection_max_age = "15m0s"
+        shutdown_timeout = 0
+        
+        [session_server]
+          session_timeout = 1800
+        
+        [[runners]]
+          name = "pwsh-docker-runner"
+          url = "gitlabservername"
+          id = 909
+          token = "RunnerToken"
+          token_obtained_at = 2024-09-05T23:38:30Z
+          token_expires_at = 0001-01-01T00:00:00Z
+          executor = "docker"
+          [runners.custom_build_dir]
+          [runners.cache]
+            MaxUploadedArchiveSize = 0
+            [runners.cache.s3]
+            [runners.cache.gcs]
+            [runners.cache.azure]
+          [runners.docker]
+            tls_verify = false
+            image = "josephjimenezs/gitlabrunner-powershell-powerbi:1.0"
+            privileged = true
+            disable_entrypoint_overwrite = false
+            oom_kill_disable = false
+            disable_cache = false
+            volumes = ["/cache"]
+            shm_size = 0
+            network_mtu = 0
 
 ### Step 4: Container Tools Verification
         docker exec -it gitlab-runner-pbi pwsh
